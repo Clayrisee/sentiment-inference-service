@@ -1,0 +1,8 @@
+scikit-learn
+pyYAML
+python-dotenv
+uvicorn[standard]
+fastapi
+python-multipart
+loguru
+nltk
