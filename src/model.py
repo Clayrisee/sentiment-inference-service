@@ -1,5 +1,5 @@
 from joblib import load
-from preprocess import Preprocess  # Assuming preprocess is a custom module you've created
+from .preprocess import Preprocess  # Assuming preprocess is a custom module you've created
 from scipy.sparse import csr_matrix
 import os
 import numpy as np
