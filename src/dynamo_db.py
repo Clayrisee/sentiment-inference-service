@@ -3,6 +3,7 @@ import boto3
 import uuid
 from .utils import convert_floats_to_decimals
 from loguru import logger
+import pandas as pd
 
 class UncertaintyDynamoDB:
     def __init__(self, table_name: str) -> None:
@@ -29,3 +30,15 @@ class UncertaintyDynamoDB:
             logger.info(f"Write Event Success. Response:{response}")
         except Exception as e:
             logger.error(f"Error write event. Error: {e}")
+    
+    def fetch_data(self) -> pd.DataFrame:
+        try:
+            response = self.uncertainty_table.scan()
+            data = response["Items"]
+            while 'LastEvaluatedKey' in response:
+                response = self.uncertainty_table.scan(ExclusiveStartKey=response['LastEvaluatedKey'])
+                data.extend(response['Items'])
+            return pd.DataFrame(data)
+        except Exception as e:
+            logger.error(f"Failed to fetch data: {e}")
+            return pd.DataFrame()
