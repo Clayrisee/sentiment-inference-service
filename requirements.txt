@@ -9,3 +9,5 @@ nltk
 mangum
 boto3
 loguru
+streamlit==1.13.0
+altair==4.2.0
