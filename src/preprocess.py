@@ -4,8 +4,7 @@ from nltk.stem.porter import PorterStemmer
 import nltk
 import pickle
 from scipy.sparse import csr_matrix
-
-nltk.download('stopwords')
+nltk.data.path.append("nltkdata")
 
 
 class Preprocess:
