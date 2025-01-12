@@ -1,15 +1,17 @@
+# File for preprocess
 import re
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 import nltk
 import pickle
 from scipy.sparse import csr_matrix
-nltk.data.path.append("nltkdata")
+
+nltk.download('stopwords')
 
 
 class Preprocess:
     """
-    Class for preprocessing text
+    Preprocessing Data
     """
     def __init__(self, vectorizer_path: str='assets/vectorizer.pickle') -> None:
         self.vectorizer = pickle.load(open(vectorizer_path, 'rb'))
@@ -25,6 +27,7 @@ class Preprocess:
         stemmed_content = [self.port_stem.stem(word) for word in stemmed_content if word not in stopwords.words('english')]   
                                                             # apply port_stem only on words not in the list of stop-words
         stemmed_content = " ".join(stemmed_content)
+        # print(stemmed_content)
         return stemmed_content
 
     def run_preprocess(self, text: str) -> csr_matrix:

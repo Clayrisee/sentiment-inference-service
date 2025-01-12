@@ -6,6 +6,3 @@ fastapi
 python-multipart
 loguru
 nltk
-mangum
-boto3
-loguru
