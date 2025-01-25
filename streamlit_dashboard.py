@@ -4,16 +4,24 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
 
-
-def filter_data(df, start_date: str, end_date: str, prediction: str) -> pd.DataFrame:
+def filter_data(
+        df: pd.DataFrame,
+        start_date: str,
+        end_date: str,
+        prediction: str
+        ) -> pd.DataFrame:
     prediction = prediction.lower()
-    df['timestamp'] = pd.to_datetime(df['timestamp']) # mengubah format timestamp yang tadinya string menjadi datetime objek
+    # df['timestamp'] = pd.to_datetime(df['timestamp']) # mengubah format timestamp yang tadinya string menjadi datetime objek
+    df['timestamp'] = pd.to_datetime(df['timestamp'], format="%Y-%m-%d %H:%M:%S", errors='coerce')
     df['confidence'] = pd.to_numeric(df['confidence']) # merubah format confidence yang tadinya string menjadi numerical
     df['uncertainty_score'] = pd.to_numeric(df['uncertainty_score'])
-    filtered = df[(df['timestamp'] >= pd.to_datetime(start_date)) & (df['timestamp'] <= pd.to_datetime(end_date))] #melakukan filter datetime
+    start_date = pd.to_datetime(start_date, format="%Y-%m-%d", errors='coerce')
+    end_date = pd.to_datetime(end_date) + pd.Timedelta(days=1) - pd.Timedelta(seconds=1)  # End of the day
+    filtered = df[(df['timestamp'] >= start_date) & (df['timestamp'] <= end_date)] #melakukan filter datetime
     if prediction != 'all': #jika jenis prediction tidak all maka akan melakukan filter tambahan dia masuk prediksi yang mana
         filtered = filtered[filtered['prediction'] == prediction]
     return filtered
+
 
 def plot_score(df: pd.DataFrame,
                time_frame: str,
